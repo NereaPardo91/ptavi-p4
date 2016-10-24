@@ -6,6 +6,8 @@ Clase (y programa principal) para un servidor de eco en UDP simple
 
 import socketserver    
 import sys
+import time
+import json
 
 P = int(sys.argv[1])
 
@@ -18,16 +20,25 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
     """
 
     def handle(self):
+        lista_datos = []
         Message = self.rfile.read().decode('utf-8').split()
         Direccion_IP = self.client_address[0]
         Direccion_SIP = Message[2]
-        self.list_users[Direccion_SIP] = Direccion_IP
+        hora_act = time.time()
+        hora_expiracion = hora_act + int(Message[-1])
+        hora = time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime(hora_expiracion))
+        self.list_users[Direccion_SIP] = Direccion_IP + ' ' + hora
 
         if int(Message[-1]) == 0:
             del self.list_users[Direccion_SIP]
+			
 
         print(self.list_users)
         self.wfile.write(b"SIP/2.0 200 OK\r\n\r\n")
+        fichjson = self.register2json()
+
+    def register2json(self):
+        json.dump(self.list_users, open('registered.json', 'w'))
 
             
 if __name__ == "__main__":
