@@ -4,27 +4,28 @@
 Clase (y programa principal) para un servidor de eco en UDP simple
 """
 
-import socketserver    #importamos el modulo
+import socketserver    
 import sys
 
 P = int(sys.argv[1])
 
-class SIPRegisterHandler(socketserver.DatagramRequestHandler): #unica clase que maneja las peticiones
+class SIPRegisterHandler(socketserver.DatagramRequestHandler):
 
     list_users = {}
+
     """
     Echo server class
     """
 
-    def handle(self):   #metodo que se ejcuta cada vez que recibimos una peticion 
-        #self.wfile.write(b"Hemos recibido tu peticion")
-        Message = self.rfile.read().decode('utf-8')
-        print("REGISTER recibido " + Message)
+    def handle(self):
+        Message = self.rfile.read().decode('utf-8').split()
         Direccion_IP = self.client_address[0]
-        Direccion_SIP = Message.split(':')[1].split(' ')[0]
-        #print("traza: " + Direccion_SIP)
-        #print("traza: " + Direccion_IP)
+        Direccion_SIP = Message[2]
         self.list_users[Direccion_SIP] = Direccion_IP
+
+        if int(Message[-1]) == 0:
+            del self.list_users[Direccion_SIP]
+
         print(self.list_users)
         self.wfile.write(b"SIP/2.0 200 OK\r\n\r\n")
 
