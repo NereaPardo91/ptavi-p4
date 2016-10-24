@@ -9,14 +9,13 @@ import sys
 
 # Constantes. Dirección IP del servidor y contenido a enviar
 try:
-	IP = sys.argv[1]
-	PORT = int(sys.argv[2])
-	#LINE = ' '.join(sys.argv[3:])
-	REGISTER = sys.argv[3]
-	USER = sys.argv[4]
-	EXPIRES = int(sys.argv[5])
+    IP = sys.argv[1]
+    PORT = int(sys.argv[2])
+    REGISTER = sys.argv[3]
+    USER = sys.argv[4]
+    EXPIRES = int(sys.argv[5])
 except:
-	sys.exit("Usage: client.py ip puerto register sip_address expires_value")
+    sys.exit("Usage: client.py ip puerto register sip_address expires_value")
 
 
 # Creamos el socket, lo configuramos y lo atamos a un servidor/puerto
