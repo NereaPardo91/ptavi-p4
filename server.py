@@ -7,7 +7,7 @@ Clase (y programa principal) para un servidor de eco en UDP simple
 import socketserver    #importamos el modulo
 import sys
 
-
+P = int(sys.argv[1])
 class EchoHandler(socketserver.DatagramRequestHandler): #unica clase que maneja las peticiones
     """
     Echo server class
@@ -21,7 +21,7 @@ class EchoHandler(socketserver.DatagramRequestHandler): #unica clase que maneja 
             print("Puerto:", self.client_address[1])
             
 if __name__ == "__main__":
-    serv = socketserver.UDPServer(('', 5060), EchoHandler)
+    serv = socketserver.UDPServer(('', P), EchoHandler)
     print("Lanzando servidor UDP de eco...")
     try:
         serv.serve_forever()
