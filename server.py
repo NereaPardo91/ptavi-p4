@@ -16,10 +16,15 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
     list_users = {}
 
     """
-    Echo server class
+    SIPRegister server class
     """
 
     def handle(self):
+
+        """
+        Registro
+        """
+
         lista_datos = []
         Message = self.rfile.read().decode('utf-8').split()
         Direccion_IP = self.client_address[0]
@@ -38,7 +43,20 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
         fichjson = self.register2json()
 
     def register2json(self):
+        """
+        Creacion fichero json
+        """
         json.dump(self.list_users, open('registered.json', 'w'))
+
+    def registered(self):
+        """
+        Comprobacion existencia fichero json
+        """
+        try:
+            with open("registered.json") as jsonFile:
+                sel.list_users = json.load(jsonFile)
+        except:
+            pass
 
             
 if __name__ == "__main__":
